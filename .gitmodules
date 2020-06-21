@@ -1,0 +1,3 @@
+[submodule "spire"]
+	path = modules/spire
+	url = git@github.com:epiccastle/spire.git

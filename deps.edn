@@ -1,0 +1,33 @@
+{:deps {;; org.clojure/core.async {:mvn/version "1.2.603"}
+        ;; cheshire {:mvn/version "5.8.1"}
+        spire {:local/root "modules/spire/target/uberjar/spire-0.1.0-alpha.14-standalone.jar"}
+        ;; org.martinklepsch/clj-http-lite {:mvn/version "0.4.3"}
+        }
+ :aliases {:native-image
+           {:main-opts ["-m clj.native-image core"
+                        "--initialize-at-build-time"
+                        "--report-unsupported-elements-at-runtime"
+                        "--enable-all-security-services"
+                        "--allow-incomplete-classpath"
+                        "--no-fallback"
+                        "--no-server"
+                        "-H:EnableURLProtocols=https,http"
+                        ;; optional native image name override
+                        "-H:ReflectionConfigurationFiles=modules/spire/graal-configs/reflect-config.json"
+                        "-H:Name=core"
+                        "-H:+ReportExceptionStackTraces"
+                        "-J-Dclojure.spec.skip-macros=true"
+                        "-J-Dclojure.compiler.direct-linking=true"
+                        "-H:ConfigurationFileDirectories=graal-configs"
+                        "--initialize-at-run-time=com.jcraft.jsch.PortWatcher"
+                        "-H:Log=registerResource:"
+                        "-H:EnableURLProtocols=http,https"
+                        "-H:+JNI"
+                        "--report-unsupported-elements-at-runtime"
+                        "--verbose"
+                        "-J-Xmx6500m"]
+            :jvm-opts ["-Dclojure.compiler.direct-linking=true"]
+            :extra-deps
+            {clj.native-image {:git/url "https://github.com/taylorwood/clj.native-image.git"
+                               :sha "7708e7fd4572459c81f6a6b8e44c96f41cdd92d4"}
+             borkdude/clj-reflector-graal-java11-fix {:mvn/version "0.0.1-graalvm-20.1.0"}}}}}
