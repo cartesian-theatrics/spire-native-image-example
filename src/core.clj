@@ -24,11 +24,12 @@
           (do (config/init!)
               (output/print-thread :default)
               (clojure.lang.RT/loadLibrary "spire")
-              (<!! (go-loop []
-                     (puget/cprint (ssh (-> options :target clojure.edn/read-string)
-                                        (shell {:cmd "echo 'hello'"})))
-                     (<! (timeout 2000))
-                     (recur))))
+              (let [ssh-target (-> options :target clojure.edn/read-string)]
+                (<!! (go-loop [x 0]
+                       (puget/cprint (ssh ssh-target
+                                          (shell {:cmd (format "echo 'hello %s'" (str x))})))
+                       (<! (timeout 2000))
+                       (recur (inc x))))))
           :else
           (do (println "Missing ssh target")
               (println summary)))))
