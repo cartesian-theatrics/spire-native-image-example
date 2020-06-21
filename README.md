@@ -1,9 +1,8 @@
-Example project building a native image that includes spire.
+Example project building a native image that includes spire and core.async.
 
 # Usage
-You'll have to update the ssh target in `src/core.clj` to be something available on your system. Then:
 
 ```bash
 make build
-./core
+./core --target '{:user "sarah" :hostname "sandbox"}'
 ```
